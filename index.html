@@ -1,160 +1,257 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark light" />
     <link rel="icon" href="./links/assets/avatar.png" type="image/png" />
-    <title>BezzubickMCPlay — Главная</title>
-    <meta name="description" content="Bezzubick MCPlay — ютубер и стример по Minecraft. Уютный канал без мата: стримы, видео, комьюнити, планы." />
 
+    <title>BezzubickMCPlay | Дом</title>
+    <meta name="description" content="BezzubickMCPlay — Minecraft, стримы, скин, ссылки." />
+
+    <meta property="og:title" content="BezzubickMCPlay" />
+    <meta property="og:description" content="Minecraft, стримы, скин, ссылки." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://httydcraft.github.io/BezzubickMCPlay/" />
+    <meta property="og:image" content="https://httydcraft.github.io/BezzubickMCPlay/links/assets/avatar.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="./links/css/style.css" />
     <link rel="stylesheet" href="./home/home.css" />
 </head>
 <body class="dark-theme">
-<div id="page-wrap" class="w-full max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
 
-    <!-- Оффлайн-баннер -->
-    <div id="offline-warning" class="hidden fixed top-0 left-0 w-full p-3 text-center font-medium z-50 offline-warning rounded-b-lg shadow-lg">
-        <span>Вы не в сети. Данные могут быть устаревшими.</span>
-    </div>
-
-    <!-- HERO -->
-    <section class="hero card m3-shadow-md p-6">
-        <img class="avatar m3-shadow-md" src="./links/assets/avatar.png" alt="Avatar" />
-        <h1>Bezzubick MCPlay</h1>
-        <p id="hero-tagline"></p>
-        <div id="totals" class="followers">Всего подписчиков: —</div>
-        <div class="cta hero-cta">
-            <a id="go-links-btn" href="./links/" class="primary-button rounded-full px-6 py-3 font-medium m3-shadow-md">
-                <span class="material-symbols-outlined">link</span><span id="go-links-text">Мои ссылки</span>
-            </a>
-            <a id="cta-ytsub" href="#" target="_blank" class="support-button rounded-full px-6 py-3 font-medium m3-shadow-md">
-                <span class="material-symbols-outlined">subscriptions</span><span id="cta-ytsub-text">Подписаться на YouTube</span>
-            </a>
-            <a id="cta-telegram" href="#" target="_blank" class="support-button rounded-full px-6 py-3 font-medium m3-shadow-md">
-                <span class="material-symbols-outlined">send</span><span id="cta-telegram-text">Telegram</span>
-            </a>
-            <a id="cta-support" href="#" target="_blank" class="support-button rounded-full px-6 py-3 font-medium m3-shadow-md">
-                <span class="material-symbols-outlined">favorite</span><span id="cta-support-text">Поддержать</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Обо мне + Таймлайн -->
-    <section class="about-card card m3-shadow-md p-6 mt-6">
-        <div id="about-intro" class="md"></div>
-
-        <div class="timeline-controls">
-            <h3 class="text-xl font-bold" id="timeline-title">Лента канала</h3>
-            <div class="tl-buttons">
-                <button id="tl-expand" class="primary-button rounded-full px-4 py-2 font-medium m3-shadow-md tl-btn" aria-label="Expand timeline">
-                    <span class="material-symbols-outlined">unfold_more</span>
-                    <span id="tl-expand-text" class="btn-text">Развернуть</span>
-                </button>
-                <button id="tl-collapse" class="control-button rounded-full px-4 py-2 font-medium m3-shadow-md tl-btn" aria-label="Collapse timeline">
-                    <span class="material-symbols-outlined">unfold_less</span>
-                    <span id="tl-collapse-text" class="btn-text">Свернуть</span>
-                </button>
-            </div>
-        </div>
-
-        <div id="timeline"></div>
-
-        <div id="about-outro" class="md mt-4"></div>
-    </section>
-
-    <!-- GRID -->
-    <div id="content-grid" class="home-grid mt-6 no-live">
-        <!-- Навигация (слева) -->
-        <section class="card m3-shadow-md p-6" id="links-cta">
-            <h2 class="text-xl font-bold mb-2" id="nav-title">Навигация</h2>
-            <p id="nav-desc" class="text-gray-400 mb-4">Перейдите на страницу со всеми моими ссылками, соцсетями, скином и dev‑инфо.</p>
-            <a id="go-links-btn-2" href="./links/" class="primary-button rounded-full px-6 py-3 font-medium m3-shadow-md">
-                <span class="material-symbols-outlined">link</span><span id="nav-cta-text">Перейти к ссылкам</span>
-            </a>
-        </section>
-
-        <!-- LIVE (прозрачный контейнер без «подложки») -->
-        <section id="live" class="relative overflow-hidden p-0 hidden">
-            <div class="youtube-video-container" id="live-embed-wrap">
-                <iframe id="live-embed" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div id="live-badge" class="absolute top-3 left-3 px-3 py-1 rounded-full text-white text-xs font-bold live-indicator m3-shadow-md">LIVE</div>
-
-            <!-- Плашка Twitch (имеет свою карточку) -->
-            <div id="twitch-notice" class="hidden mt-4 p-4 rounded-2xl text-sm text-center card m3-shadow-md">
-                <p class="mb-2" id="twitch-text">Стрим также идёт на Twitch!</p>
-                <a id="twitch-link" href="#" target="_blank" class="primary-button inline-flex items-center px-4 py-2 rounded-full font-medium" rel="noopener noreferrer">
-                    <span class="material-symbols-outlined text-base">videocam</span><span id="twitch-cta">Смотреть на Twitch</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Календарь (всегда виден; прозрачный фон) -->
-        <section id="calendar" class="p-6">
-            <div class="md text-center mb-2">
-                <h3 id="live-empty-title">Сейчас стрима нет</h3>
-                <p id="live-empty-sub">Обычно стримы по пятницам, 17:00–19:00 МСК.</p>
-            </div>
-
-            <div class="cal-nav">
-                <button id="cal-prev" class="control-button p-2 rounded-full m3-shadow-md" aria-label="Previous month">
-                    <span class="material-symbols-outlined">chevron_left</span>
-                </button>
-                <div id="cal-label" class="font-medium"></div>
-                <button id="cal-next" class="control-button p-2 rounded-full m3-shadow-md" aria-label="Next month">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
-            </div>
-
-            <div id="cal-weekdays" class="stream-cal-head"></div>
-            <div id="cal-grid" class="stream-cal-grid"></div>
-
-            <div class="legend">
-                <span class="dot yt"></span><span id="legend-yt">YouTube</span>
-                <span class="dot tw"></span><span id="legend-tw">Twitch</span>
-                <span class="dot both"></span><span id="legend-both">Оба</span>
-                <span class="dot planned"></span><span id="legend-planned">Потенциальный</span>
-                <span class="muted" id="legend-missed">Зачёркнутые — стрима не было</span>
-            </div>
-        </section>
-
-        <!-- Скин (слева под навигацией) -->
-        <section id="skin" class="card m3-shadow-md p-6">
-            <h2 class="text-xl font-bold text-center mb-4" id="skin-title">Мой скин Minecraft</h2>
-            <div id="skin-viewer" class="skin-viewer">
-                <canvas id="skin-canvas"></canvas>
-            </div>
-            <div id="skin-controls" class="skin-controls"></div>
-            <div class="flex justify-center mt-2">
-                <a id="download-skin" href="./links/assets/skin.png" class="primary-button rounded-full px-6 py-3 font-medium m3-shadow-md" download="minecraft_skin.png" rel="noopener">
-                    <span class="material-symbols-outlined">download</span><span id="skin-download-text">Скачать скин</span>
-                </a>
-            </div>
-        </section>
-    </div>
-
-    <!-- Видео -->
-    <section class="mb-8 mt-6">
-        <h2 class="text-xl font-bold mb-3" id="videos-title">Последние видео</h2>
-        <div id="carousel" class="flex overflow-x-auto space-x-4 pb-4 video-carousel scroll-smooth"></div>
-    </section>
-
-    <!-- Нижние переключатели -->
-    <div class="flex justify-center items-center space-x-4 mt-8 mb-8">
-        <button id="theme-toggle-bottom" class="control-button p-3 rounded-full m3-shadow-md" aria-label="Toggle theme">
-            <span class="material-symbols-outlined" id="theme-icon-bottom">light_mode</span>
-        </button>
-        <button id="lang-toggle-bottom" class="control-button p-3 rounded-full m3-shadow-md" aria-label="Toggle language">
-            <span class="material-symbols-outlined" id="lang-icon-bottom">translate</span>
-        </button>
-    </div>
+<!-- ───── Жидкие фоновые «капли» (Liquid Glass background) ───── -->
+<div class="bg-stage" aria-hidden="true">
+    <div class="bg-grain"></div>
+    <div class="bg-blob bg-blob--1"></div>
+    <div class="bg-blob bg-blob--2"></div>
+    <div class="bg-blob bg-blob--3"></div>
+    <div class="bg-blob bg-blob--4"></div>
+    <div class="bg-vignette"></div>
 </div>
+
+<!-- ───── Светящийся курсор (desktop only, hidden on touch) ───── -->
+<div class="cursor-trail" aria-hidden="true">
+    <div class="cursor-trail__dot"></div>
+    <div class="cursor-trail__halo"></div>
+</div>
+
+<!-- ───── Оффлайн-баннер ───── -->
+<div id="offline-warning" class="offline-banner hidden" role="status" aria-live="polite">
+    <span class="material-symbols-outlined">cloud_off</span>
+    <span>Нет соединения — показаны последние данные</span>
+</div>
+
+<!-- ───── Safari-pill auto-hiding navigation ───── -->
+<nav class="dock" id="dock" aria-label="Главная навигация">
+    <div class="dock__pill glass glass--strong">
+        <a class="dock__item" href="#hero" data-target="hero">
+            <span class="material-symbols-outlined">home</span>
+            <span class="dock__label">Главная</span>
+        </a>
+        <a class="dock__item" href="#content" data-target="content">
+            <span class="material-symbols-outlined">videocam</span>
+            <span class="dock__label">Стрим</span>
+        </a>
+        <a class="dock__item" href="#skin" data-target="skin">
+            <span class="material-symbols-outlined">person</span>
+            <span class="dock__label">Скин</span>
+        </a>
+        <a class="dock__item" href="#videos" data-target="videos">
+            <span class="material-symbols-outlined">smart_display</span>
+            <span class="dock__label">Видео</span>
+        </a>
+        <a class="dock__item" href="#about" data-target="about">
+            <span class="material-symbols-outlined">menu_book</span>
+            <span class="dock__label">О канале</span>
+        </a>
+        <a class="dock__item" href="./links/" data-external>
+            <span class="material-symbols-outlined">link</span>
+            <span class="dock__label">Ссылки</span>
+        </a>
+    </div>
+</nav>
+
+<main class="page">
+
+    <!-- ───── HERO ───── -->
+    <section id="hero" class="hero">
+        <div class="hero__inner">
+            <div class="hero__eyebrow glass glass--chip">
+                <span class="hero__pulse"></span>
+                <span id="totals">—</span>
+            </div>
+            <h1 class="hero__title">BezzubickMCPlay</h1>
+            <p class="hero__tagline" id="hero-tagline"></p>
+
+            <div class="hero__actions">
+                <a id="go-links-btn" href="./links/" class="btn btn--primary">
+                    <span class="material-symbols-outlined">apps</span>
+                    <span id="go-links-text"></span>
+                </a>
+                <a id="cta-ytsub" href="#" target="_blank" rel="noopener" class="btn btn--ghost">
+                    <span class="material-symbols-outlined">subscriptions</span>
+                    <span id="cta-ytsub-text"></span>
+                </a>
+                <a id="cta-telegram" href="#" target="_blank" rel="noopener" class="btn btn--ghost">
+                    <span class="material-symbols-outlined">send</span>
+                    <span id="cta-telegram-text"></span>
+                </a>
+                <a id="cta-support" href="#" target="_blank" rel="noopener" class="btn btn--accent">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span id="cta-support-text"></span>
+                </a>
+            </div>
+        </div>
+        <div class="hero__scroll-hint" aria-hidden="true">
+            <span class="material-symbols-outlined">expand_more</span>
+        </div>
+    </section>
+
+    <!-- ───── CONTENT GRID: Live + Calendar + Skin ───── -->
+    <section id="content" class="section">
+        <div id="content-grid" class="content-grid no-live">
+
+            <!-- NAV / promo card (видна когда нет лайва) -->
+            <article class="panel glass nav-card" aria-labelledby="nav-title">
+                <header class="panel__head">
+                    <h2 id="nav-title" class="panel__title"></h2>
+                </header>
+                <p class="panel__desc" id="nav-desc"></p>
+                <a id="go-links-btn-2" href="./links/" class="btn btn--primary btn--block">
+                    <span class="material-symbols-outlined">apps</span>
+                    <span id="nav-cta-text"></span>
+                </a>
+            </article>
+
+            <!-- LIVE -->
+            <article id="live" class="panel glass live-card hidden" aria-labelledby="live-badge-label">
+                <div class="live-card__media">
+                    <div id="live-embed-wrap" class="live-card__embed">
+                        <iframe id="live-embed" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div id="live-badge" class="live-badge">
+                        <span class="live-badge__dot"></span>
+                        <span id="live-badge-label">LIVE</span>
+                    </div>
+                </div>
+                <div id="twitch-notice" class="twitch-notice hidden">
+                    <p id="twitch-text"></p>
+                    <a id="twitch-link" href="#" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">
+                        <span class="material-symbols-outlined">videocam</span>
+                        <span id="twitch-cta"></span>
+                    </a>
+                </div>
+            </article>
+
+            <!-- LIVE EMPTY STATE -->
+            <div class="live-empty">
+                <h3 id="live-empty-title" class="live-empty__title"></h3>
+                <p id="live-empty-sub" class="live-empty__sub"></p>
+            </div>
+
+            <!-- CALENDAR -->
+            <article id="calendar" class="panel glass calendar-card" aria-labelledby="cal-label">
+                <header class="calendar-card__head">
+                    <button id="cal-prev" class="icon-btn" aria-label="Предыдущий месяц">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <h2 id="cal-label" class="panel__title"></h2>
+                    <button id="cal-next" class="icon-btn" aria-label="Следующий месяц">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </header>
+                <div id="cal-weekdays" class="cal-weekdays"></div>
+                <div id="cal-grid" class="cal-grid"></div>
+                <footer class="cal-legend">
+                    <span class="cal-legend__item"><span class="dot yt"></span><span id="legend-yt"></span></span>
+                    <span class="cal-legend__item"><span class="dot tw"></span><span id="legend-tw"></span></span>
+                    <span class="cal-legend__item"><span class="dot both"></span><span id="legend-both"></span></span>
+                    <span class="cal-legend__item"><span class="dot planned"></span><span id="legend-planned"></span></span>
+                    <span class="cal-legend__item"><span class="dot missed"></span><span id="legend-missed"></span></span>
+                </footer>
+            </article>
+
+            <!-- SKIN -->
+            <article id="skin" class="panel glass skin-card">
+                <header class="panel__head">
+                    <h2 id="skin-title" class="panel__title"></h2>
+                </header>
+                <div id="skin-viewer" class="skin-card__viewer">
+                    <canvas id="skin-canvas"></canvas>
+                </div>
+                <div id="skin-controls" class="skin-card__controls"></div>
+                <button id="download-skin" class="btn btn--primary btn--block">
+                    <span class="material-symbols-outlined">download</span>
+                    <span id="skin-download-text"></span>
+                </button>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- ───── VIDEOS CAROUSEL ───── -->
+    <section id="videos" class="section">
+        <header class="section__head">
+            <h2 id="videos-title" class="section__title"></h2>
+        </header>
+        <div id="carousel" class="carousel" tabindex="0" aria-label="Последние видео"></div>
+    </section>
+
+    <!-- ───── ABOUT + TIMELINE ───── -->
+    <section id="about" class="section">
+        <article class="panel glass about-card">
+            <div id="about-intro" class="md"></div>
+
+            <div class="timeline-head">
+                <h2 id="timeline-title" class="panel__title"></h2>
+                <div class="timeline-actions">
+                    <button id="tl-expand" class="btn btn--ghost btn--sm">
+                        <span class="material-symbols-outlined">unfold_more</span>
+                        <span id="tl-expand-text"></span>
+                    </button>
+                    <button id="tl-collapse" class="btn btn--ghost btn--sm">
+                        <span class="material-symbols-outlined">unfold_less</span>
+                        <span id="tl-collapse-text"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="timeline" class="timeline-list"></div>
+
+            <div id="about-outro" class="md md--outro"></div>
+        </article>
+    </section>
+
+    <!-- ───── FOOTER CONTROLS ───── -->
+    <footer class="footer-controls">
+        <div class="footer-controls__pill glass glass--strong">
+            <button id="theme-toggle-bottom" class="icon-btn" aria-label="Сменить тему">
+                <span class="material-symbols-outlined" id="theme-icon-bottom">dark_mode</span>
+            </button>
+            <button id="lang-toggle-bottom" class="icon-btn" aria-label="Сменить язык">
+                <span class="material-symbols-outlined">language</span>
+            </button>
+        </div>
+        <p class="footer-controls__sig">© BezzubickMCPlay · Made with care</p>
+    </footer>
+
+    <!-- Скрытые legacy-кнопки (для совместимости с home.js, который ищет theme-toggle и lang-toggle) -->
+    <button id="theme-toggle" class="visually-hidden" aria-hidden="true" tabindex="-1">
+        <span id="theme-icon"></span>
+    </button>
+    <button id="lang-toggle" class="visually-hidden" aria-hidden="true" tabindex="-1"></button>
+
+</main>
 
 <script type="module" src="./home/home.js"></script>
 </body>
 </html>
+
