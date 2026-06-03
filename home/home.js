@@ -775,5 +775,121 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         }
     })();
 
+    /* ───────────────────────────────────────────────────────────────────────────
+       macOS Tahoe enhancements
+       - cross-page theme/lang sync
+       - dock auto-hide + active section
+       - magnetic glass cursor (no laser dot)
+       ─────────────────────────────────────────────────────────────────────────── */
+    (() => {
+
+        // ─── Cross-page sync: when theme/lang changes on this page, mirror to /links keys ───
+        const syncKeys = () => {
+            try {
+                const t = localStorage.getItem('home_theme'); if (t) localStorage.setItem('theme', t);
+                const l = localStorage.getItem('home_lang');  if (l) localStorage.setItem('lang',  l);
+            } catch(e) {}
+        };
+        // Sync on every click on the theme/lang toggles
+        ['theme-toggle','theme-toggle-bottom','lang-toggle','lang-toggle-bottom'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('click', () => setTimeout(syncKeys, 0));
+        });
+        // Also sync on storage change from other tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'theme' && e.newValue) { localStorage.setItem('home_theme', e.newValue); }
+            if (e.key === 'lang'  && e.newValue) { localStorage.setItem('home_lang',  e.newValue); }
+        });
+        syncKeys();
+
+        // ─── Dock auto-hide ───
+        const dock = document.getElementById('dock');
+        if (dock) {
+            let lastY = window.scrollY, ticking = false;
+            const HIDE = 80;
+            const upd = () => {
+                const y = window.scrollY;
+                if (y < HIDE) dock.classList.remove('is-hidden');
+                else if (y > lastY + 4) dock.classList.add('is-hidden');
+                else if (y < lastY - 4) dock.classList.remove('is-hidden');
+                lastY = y; ticking = false;
+            };
+            window.addEventListener('scroll', () => {
+                if (!ticking) { requestAnimationFrame(upd); ticking = true; }
+            }, { passive: true });
+            window.addEventListener('mousemove', (e) => {
+                if (e.clientY < 60) dock.classList.remove('is-hidden');
+            }, { passive: true });
+
+            // Active section
+            const ids = ['hero','content','skin','videos','about'];
+            const items = dock.querySelectorAll('.dock__item[data-target]');
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            items.forEach(it => it.classList.toggle('is-active', it.dataset.target === e.target.id));
+                        }
+                    });
+                }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+                ids.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+            }
+        }
+
+        // ─── Smooth anchor scroll for dock & nav-tiles ───
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', (e) => {
+                const id = a.getAttribute('href').slice(1);
+                const el = document.getElementById(id);
+                if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            });
+        });
+
+        // ─── Magnetic Glass Cursor ───
+        const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const cursor = document.querySelector('.glass-cursor');
+        if (canHover && cursor) {
+            let mx = -100, my = -100, cx = -100, cy = -100;
+            const lens = cursor.querySelector('.glass-cursor__lens');
+
+            window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+            window.addEventListener('mousedown', () => document.body.classList.add('cursor-press'));
+            window.addEventListener('mouseup',   () => document.body.classList.remove('cursor-press'));
+            window.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+            window.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+            // Smooth follow with magnetic snap on interactive hover
+            let snapTarget = null;
+            const loop = () => {
+                let tx = mx, ty = my;
+                if (snapTarget) {
+                    const r = snapTarget.getBoundingClientRect();
+                    const cxR = r.left + r.width / 2;
+                    const cyR = r.top  + r.height / 2;
+                    // Magnetic pull (30% toward center)
+                    tx = mx + (cxR - mx) * 0.30;
+                    ty = my + (cyR - my) * 0.30;
+                }
+                cx += (tx - cx) * 0.22;
+                cy += (ty - cy) * 0.22;
+                // Get current size from CSS computed style
+                const size = parseFloat(getComputedStyle(cursor).width) || 44;
+                cursor.style.transform = `translate3d(${cx - size/2}px, ${cy - size/2}px, 0)`;
+                requestAnimationFrame(loop);
+            };
+            requestAnimationFrame(loop);
+
+            const sel = 'a, button, .btn, .icon-btn, .mini-button, .dock__item, .nav-tile, .carousel .card, summary, .cell, [role="button"]';
+            document.addEventListener('mouseover', (e) => {
+                const t = e.target.closest(sel);
+                if (t) { document.body.classList.add('cursor-hover'); snapTarget = t; }
+            });
+            document.addEventListener('mouseout', (e) => {
+                const t = e.target.closest(sel);
+                if (t) { document.body.classList.remove('cursor-hover'); snapTarget = null; }
+            });
+        }
+    })();
+
 
 

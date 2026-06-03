@@ -1,4 +1,5 @@
 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
@@ -21,35 +22,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
+    <!-- Cross-page theme/lang sync (must run before stylesheet to avoid flash) -->
+    <script>
+        (function(){
+            try {
+                // Bridge keys between /home (home_theme, home_lang) and /links (theme, lang)
+                var t = localStorage.getItem('home_theme') || localStorage.getItem('theme');
+                var l = localStorage.getItem('home_lang')  || localStorage.getItem('lang');
+                if (t) { localStorage.setItem('home_theme', t); localStorage.setItem('theme', t); }
+                if (l) { localStorage.setItem('home_lang',  l); localStorage.setItem('lang',  l); }
+                if (t === 'light') document.documentElement.classList.add('pre-light');
+            } catch(e){}
+        })();
+    </script>
+
     <link rel="stylesheet" href="./home/home.css" />
 </head>
 <body class="dark-theme">
 
-<!-- ───── Жидкие фоновые «капли» (Liquid Glass background) ───── -->
+<!-- ───── SVG filters: real Liquid Glass refraction ───── -->
+<svg class="sr-svg" aria-hidden="true" focusable="false">
+    <defs>
+        <!-- Strong panel refraction -->
+        <filter id="lg-refract" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.014 0.018" numOctaves="2" seed="7" result="noise"/>
+            <feGaussianBlur in="noise" stdDeviation="2" result="softNoise"/>
+            <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <!-- Subtle refraction for smaller items -->
+        <filter id="lg-refract-sm" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.024" numOctaves="2" seed="3" result="n"/>
+            <feGaussianBlur in="n" stdDeviation="1.4" result="sn"/>
+            <feDisplacementMap in="SourceGraphic" in2="sn" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <!-- Cursor lens refraction -->
+        <filter id="lg-cursor" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03 0.03" numOctaves="2" seed="11" result="cn"/>
+            <feDisplacementMap in="SourceGraphic" in2="cn" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </defs>
+</svg>
+
+<!-- ───── Liquid background ───── -->
 <div class="bg-stage" aria-hidden="true">
     <div class="bg-grain"></div>
     <div class="bg-blob bg-blob--1"></div>
     <div class="bg-blob bg-blob--2"></div>
     <div class="bg-blob bg-blob--3"></div>
     <div class="bg-blob bg-blob--4"></div>
+    <div class="bg-blob bg-blob--5"></div>
     <div class="bg-vignette"></div>
 </div>
 
-<!-- ───── Светящийся курсор (desktop only, hidden on touch) ───── -->
-<div class="cursor-trail" aria-hidden="true">
-    <div class="cursor-trail__dot"></div>
-    <div class="cursor-trail__halo"></div>
+<!-- ───── Magnetic glass cursor ───── -->
+<div class="glass-cursor" aria-hidden="true">
+    <div class="glass-cursor__lens"></div>
 </div>
 
-<!-- ───── Оффлайн-баннер ───── -->
+<!-- ───── Offline ───── -->
 <div id="offline-warning" class="offline-banner hidden" role="status" aria-live="polite">
     <span class="material-symbols-outlined">cloud_off</span>
     <span>Нет соединения — показаны последние данные</span>
 </div>
 
-<!-- ───── Safari-pill auto-hiding navigation ───── -->
+<!-- ───── Dock ───── -->
 <nav class="dock" id="dock" aria-label="Главная навигация">
-    <div class="dock__pill glass glass--strong">
+    <div class="dock__pill lg-pill">
         <a class="dock__item" href="#hero" data-target="hero">
             <span class="material-symbols-outlined">home</span>
             <span class="dock__label">Главная</span>
@@ -79,10 +117,10 @@
 
 <main class="page">
 
-    <!-- ───── HERO ───── -->
+    <!-- HERO -->
     <section id="hero" class="hero">
         <div class="hero__inner">
-            <div class="hero__eyebrow glass glass--chip">
+            <div class="hero__eyebrow lg-chip">
                 <span class="hero__pulse"></span>
                 <span id="totals">—</span>
             </div>
@@ -113,24 +151,48 @@
         </div>
     </section>
 
-    <!-- ───── CONTENT GRID: Live + Calendar + Skin ───── -->
+    <!-- CONTENT GRID -->
     <section id="content" class="section">
         <div id="content-grid" class="content-grid no-live">
 
-            <!-- NAV / promo card (видна когда нет лайва) -->
-            <article class="panel glass nav-card" aria-labelledby="nav-title">
-                <header class="panel__head">
-                    <h2 id="nav-title" class="panel__title"></h2>
-                </header>
-                <p class="panel__desc" id="nav-desc"></p>
-                <a id="go-links-btn-2" href="./links/" class="btn btn--primary btn--block">
-                    <span class="material-symbols-outlined">apps</span>
-                    <span id="nav-cta-text"></span>
-                </a>
+            <!-- ─── NEW: Compact horizontal nav-card (Launchpad style) ─── -->
+            <article class="lg-panel nav-card" aria-labelledby="nav-title">
+                <div class="nav-card__head">
+                    <div class="nav-card__title-wrap">
+                        <h2 id="nav-title" class="panel__title"></h2>
+                        <p class="panel__desc" id="nav-desc"></p>
+                    </div>
+                    <a id="go-links-btn-2" href="./links/" class="btn btn--primary">
+                        <span class="material-symbols-outlined">apps</span>
+                        <span id="nav-cta-text"></span>
+                    </a>
+                </div>
+                <div class="nav-card__tiles">
+                    <a href="#content" class="nav-tile" data-tile="stream">
+                        <span class="material-symbols-outlined">videocam</span>
+                        <span class="nav-tile__label">Стрим</span>
+                    </a>
+                    <a href="#skin" class="nav-tile" data-tile="skin">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="nav-tile__label">Скин</span>
+                    </a>
+                    <a href="#videos" class="nav-tile" data-tile="videos">
+                        <span class="material-symbols-outlined">smart_display</span>
+                        <span class="nav-tile__label">Видео</span>
+                    </a>
+                    <a href="#about" class="nav-tile" data-tile="about">
+                        <span class="material-symbols-outlined">menu_book</span>
+                        <span class="nav-tile__label">О канале</span>
+                    </a>
+                    <a href="./links/" class="nav-tile" data-tile="links">
+                        <span class="material-symbols-outlined">link</span>
+                        <span class="nav-tile__label">Ссылки</span>
+                    </a>
+                </div>
             </article>
 
             <!-- LIVE -->
-            <article id="live" class="panel glass live-card hidden" aria-labelledby="live-badge-label">
+            <article id="live" class="lg-panel live-card hidden">
                 <div class="live-card__media">
                     <div id="live-embed-wrap" class="live-card__embed">
                         <iframe id="live-embed" frameborder="0"
@@ -151,14 +213,13 @@
                 </div>
             </article>
 
-            <!-- LIVE EMPTY STATE -->
             <div class="live-empty">
                 <h3 id="live-empty-title" class="live-empty__title"></h3>
                 <p id="live-empty-sub" class="live-empty__sub"></p>
             </div>
 
             <!-- CALENDAR -->
-            <article id="calendar" class="panel glass calendar-card" aria-labelledby="cal-label">
+            <article id="calendar" class="lg-panel calendar-card">
                 <header class="calendar-card__head">
                     <button id="cal-prev" class="icon-btn" aria-label="Предыдущий месяц">
                         <span class="material-symbols-outlined">chevron_left</span>
@@ -180,7 +241,7 @@
             </article>
 
             <!-- SKIN -->
-            <article id="skin" class="panel glass skin-card">
+            <article id="skin" class="lg-panel skin-card">
                 <header class="panel__head">
                     <h2 id="skin-title" class="panel__title"></h2>
                 </header>
@@ -197,7 +258,7 @@
         </div>
     </section>
 
-    <!-- ───── VIDEOS CAROUSEL ───── -->
+    <!-- VIDEOS -->
     <section id="videos" class="section">
         <header class="section__head">
             <h2 id="videos-title" class="section__title"></h2>
@@ -205,9 +266,9 @@
         <div id="carousel" class="carousel" tabindex="0" aria-label="Последние видео"></div>
     </section>
 
-    <!-- ───── ABOUT + TIMELINE ───── -->
+    <!-- ABOUT -->
     <section id="about" class="section">
-        <article class="panel glass about-card">
+        <article class="lg-panel about-card">
             <div id="about-intro" class="md"></div>
 
             <div class="timeline-head">
@@ -230,9 +291,9 @@
         </article>
     </section>
 
-    <!-- ───── FOOTER CONTROLS ───── -->
+    <!-- FOOTER -->
     <footer class="footer-controls">
-        <div class="footer-controls__pill glass glass--strong">
+        <div class="footer-controls__pill lg-pill">
             <button id="theme-toggle-bottom" class="icon-btn" aria-label="Сменить тему">
                 <span class="material-symbols-outlined" id="theme-icon-bottom">dark_mode</span>
             </button>
@@ -243,7 +304,6 @@
         <p class="footer-controls__sig">© BezzubickMCPlay · Made with care</p>
     </footer>
 
-    <!-- Скрытые legacy-кнопки (для совместимости с home.js, который ищет theme-toggle и lang-toggle) -->
     <button id="theme-toggle" class="visually-hidden" aria-hidden="true" tabindex="-1">
         <span id="theme-icon"></span>
     </button>
